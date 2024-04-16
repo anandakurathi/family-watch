@@ -3,8 +3,8 @@ import TasksList from '@/components/TasksList.vue'
 import TaskDetails from '@/components/TaskDetails.vue'
 import HeaderNav from '@/components/HeaderNav.vue'
 import FooterNav from '@/components/FooterNav.vue'
-import { mapActions, mapGetters, mapState,  } from 'vuex'
-import PageBanner from "@/components/PageBanner.vue";
+import PageBanner from '@/components/PageBanner.vue'
+import TaskManagementService from '@/services/api/TaskManagementService.js'
 
 export default {
   name: 'todo-view',
@@ -20,26 +20,23 @@ export default {
     TaskDetails,
     TasksList
   },
-  computed: {
-    ...mapState('TaskStore', ['todos']),
-    ...mapActions('TaskStore', ['getTasks']),
-    ...mapGetters('TaskStore', ['getAllTasks']),
-  },
-  created() {
-    this.$store.dispatch('TaskStore/getTasks')
-    console.log('created Hook', this.$store.getters.getAllTasks)
+  methods: {
+    retrieveTasks() {
+      TaskManagementService.getAllTasks()
+        .then((response) => {
+          this.todos = response
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   },
   mounted() {
-    document.querySelector('#navbarSideCollapse').addEventListener('click', function() {
+    this.retrieveTasks()
+
+    document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
       document.querySelector('.offcanvas-collapse').classList.toggle('open')
     })
-    console.log('mounted')
-  },
-  watch:{
-    '$store.state.TaskStore.todos': function() {
-      console.log(this.$store.state.TaskStore.todos)
-      this.todos = this.$store.state.TaskStore.todos;
-    }
   }
 }
 </script>
@@ -57,6 +54,4 @@ export default {
   <footer-nav />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

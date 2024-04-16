@@ -1,13 +1,11 @@
 <script>
 export default {
-    name: "FooterNav"
+  name: 'FooterNav'
 }
 </script>
 
 <template>
-    <p class="alert alert-info">Copywrites reserved!!</p>
+  <p class="alert alert-info">Copywrites reserved!!</p>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
